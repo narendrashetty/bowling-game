@@ -1,5 +1,11 @@
 import { fromJS } from 'immutable';
-import { generateInitialFrames, generateInitialScore, updateFrames, changePlayer, updateAllScores } from '../utils';
+import {
+  generateInitialFrames,
+  generateInitialScore,
+  updateFrames,
+  changePlayer,
+  updateAllScores
+} from '../utils';
 
 const initialState = fromJS({
   'hasStarted': false,

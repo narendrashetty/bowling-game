@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable';
-
-const TOTAL_FRAMES = 10;
+import { TOTAL_FRAMES } from './constants';
 
 export const generateInitialFrames = (players) => {
   let frames = fromJS([]);
