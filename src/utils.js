@@ -6,7 +6,7 @@ export const generateInitialFrames = (players) => {
   let frames = fromJS([]);
   let totalFrames = TOTAL_FRAMES;
   while(totalFrames) {
-    frames = frames.push(players.map((player) => {
+    frames = frames.push(players.map((player, index) => {
       return fromJS({
         'frameStatus': 'INACTIVE',
         'rolls': []
@@ -15,7 +15,7 @@ export const generateInitialFrames = (players) => {
 
     totalFrames--;
   }
-  return frames;
+  return frames.setIn([0, 0, 'frameStatus'], 'ACTIVE');
 };
 
 export const generateInitialScore = (players) => {
@@ -81,6 +81,7 @@ export const updateFrames = (state, knockedPins) => {
 export const changePlayer = (state) => {
   let currentPlayerIndex = state.get('currentPlayerIndex');
   let currentFrameIndex = state.get('currentFrameIndex');
+  let frames = state.get('frames');
 
   currentPlayerIndex++;
 
@@ -93,7 +94,10 @@ export const changePlayer = (state) => {
     'currentRoll': 0,
     'currentPins': 10,
     currentPlayerIndex,
-    currentFrameIndex
+    currentFrameIndex,
+    'frames': frames.mergeIn([currentFrameIndex, currentPlayerIndex], fromJS({
+      'frameStatus': 'ACTIVE'
+    }))
   });
 };
 

@@ -17,17 +17,18 @@ export const Frames = React.createClass({
       </thead>
     );
   },
-
   renderFrames(playerIndex) {
     return this.props.frames.map((frame, index) => {
       return (
-        <td style={{'border': '1px solid'}}>
-          {frame.getIn([playerIndex, 'frameStatus'])}
-          {frame.getIn([playerIndex, 'rolls']).map((roll) => {
-            return <div>{roll}</div>;
-          })}
-
-          {this.props.score.getIn([index, playerIndex])}
+        <td className="frame" data-status={frame.getIn([playerIndex, 'frameStatus'])}>
+          <div className="frame__rolls">
+            {frame.getIn([playerIndex, 'rolls']).map((roll) => {
+              return <div className="roll">{roll}</div>;
+            })}
+          </div>
+          <div className="frame__score">
+            {this.props.score.getIn([index, playerIndex])}
+          </div>
         </td>
       );
     });
@@ -41,7 +42,7 @@ export const Frames = React.createClass({
       }
     });
     return (
-      <td>
+      <td className="scoreboard__finalScore">
         {totalScore}
       </td>
     );
@@ -49,14 +50,13 @@ export const Frames = React.createClass({
 
   render() {
     return (
-      <table width={800} style={{
-      }}>
+      <table className="scoreboard">
         {this.renderHeader()}
         <tbody>
           {this.props.players.map((player, index) => {
             return (
               <tr key={player}>
-                <td>{player}</td>
+                <td className="scoreboard__player">{player}</td>
                 {this.renderFrames(index)}
                 {this.renderScore(index)}
               </tr>

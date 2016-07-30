@@ -1,0 +1,102 @@
+.scoreboard {
+  border: solid 1px #666;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin: 30px auto;
+  th, td {
+    border: solid 1px #999;
+    margin: 0;
+  }
+
+  th {
+    padding: 5px;
+    background-color: #eee;
+    width: 60px;
+    &:nth-child(10) {
+      width: 90px;
+    }
+  }
+
+  td {
+    padding: 0;
+  }
+
+  &__player {
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  &__finalScore {
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+.frame {
+  &__rolls {
+    height: 25px;
+    line-height: 25px;
+    display: flex;
+    .roll {
+      height: 25px;
+      display: inline-block;
+      text-align: center;
+      flex-grow: 1;
+      &:nth-child(2), &:nth-child(3) {
+        border-left: 1px solid #000;
+        border-bottom: 1px solid #000;
+      }
+    }
+  }
+
+  &__score {
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    font-size: 22px;
+  }
+
+  &[data-status="ACTIVE"] {
+    background: yellow;
+  }
+
+  &[data-status="SPARE"], &[data-status="STRIKE"] {
+    .frame__rolls {
+      position: relative;
+      .roll {        
+        &:nth-child(2), &:nth-child(3) {
+          font-size: 0px;
+          border: 0px;
+        }
+      }
+      &:after {
+        content: '\\';
+        width: 30px;
+        height: 30px;
+        border-left: 1px solid #000;
+        border-bottom: 1px solid #000;
+        position: absolute;
+        right: 0;
+        font-size: 30px;
+        text-align: center;
+        line-height: 30px;
+      }
+    }
+  }
+
+  &[data-status="STRIKE"] {
+    .frame__rolls {
+      position: relative;
+      .roll {
+        font-size: 0px;
+        border: 0px;
+      }
+      &:after {
+        content: 'X';
+      }
+    }
+  }
+}
