@@ -1,6 +1,8 @@
 import { fromJS } from 'immutable';
 import { TOTAL_FRAMES } from './constants';
 
+// This method is used to generate
+// initial set of frames based on player count
 export const generateInitialFrames = (players) => {
   let frames = fromJS([]);
   let totalFrames = TOTAL_FRAMES;
@@ -17,6 +19,8 @@ export const generateInitialFrames = (players) => {
   return frames.setIn([0, 0, 'frameStatus'], 'ACTIVE');
 };
 
+// This method is used to generate
+// initial set of score for every frame
 export const generateInitialScore = (players) => {
   let frames = fromJS([]);
   let totalFrames = TOTAL_FRAMES;
@@ -27,6 +31,8 @@ export const generateInitialScore = (players) => {
   return frames;
 };
 
+// This method is called everytime ball is rolled.
+// this determines if the frame is SPARE, STRIKE or normal.
 export const updateFrames = (state, knockedPins) => {
   const currentFrameIndex = state.get('currentFrameIndex');
   const currentPlayerIndex = state.get('currentPlayerIndex');
@@ -77,6 +83,7 @@ export const updateFrames = (state, knockedPins) => {
   });
 };
 
+// this method is used to change the player
 export const changePlayer = (state) => {
   let currentPlayerIndex = state.get('currentPlayerIndex');
   let currentFrameIndex = state.get('currentFrameIndex');
@@ -107,6 +114,7 @@ export const changePlayer = (state) => {
   });
 };
 
+// this method is used to update the score of a particular frame.
 export const updateScoreSingle = (currentFrameIndex, currentPlayerIndex, newFrames) => {
   const currentFrame = newFrames.getIn([currentFrameIndex, currentPlayerIndex]);
   const frameStatus = currentFrame.get('frameStatus');
@@ -139,7 +147,8 @@ export const updateScoreSingle = (currentFrameIndex, currentPlayerIndex, newFram
   return score;
 };
 
-
+// this method is used to update all frames.
+// this is called everytime the ball is rolled.
 export const updateAllScores = (state, newFrames) => {
   const currentFrameIndex = state.get('currentFrameIndex');
   const currentPlayerIndex = state.get('currentPlayerIndex');
