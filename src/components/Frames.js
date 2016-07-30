@@ -7,6 +7,7 @@ export const Frames = React.createClass({
         <tr>
           <th rowSpan="2">Player</th>
           <th colSpan="10">Frames</th>
+          <th rowSpan="2">Score</th>
         </tr>
         <tr>
           {this.props.frames.map((frame, index) => {
@@ -32,6 +33,20 @@ export const Frames = React.createClass({
     });
   },
 
+  renderScore(playerIndex) {
+    let totalScore = 0;
+    this.props.score.forEach((frame) => {
+      if (frame.get(playerIndex)) {
+        totalScore += frame.get(playerIndex);
+      }
+    });
+    return (
+      <td>
+        {totalScore}
+      </td>
+    );
+  },
+
   render() {
     return (
       <table width={800} style={{
@@ -43,6 +58,7 @@ export const Frames = React.createClass({
               <tr key={player}>
                 <td>{player}</td>
                 {this.renderFrames(index)}
+                {this.renderScore(index)}
               </tr>
             );
           })}
