@@ -32,8 +32,10 @@ export default function(state = initialState, action) {
 
     case 'ROLL':
       let currentRoll = state.get('currentRoll');
-      const knockedPins = Math.floor(Math.random() * (state.get('currentPins') + 1));
+      let knockedPins = Math.floor(Math.random() * (state.get('currentPins') + 1));
       const remainingPins = state.get('currentPins') - knockedPins;
+      const currentFrameIndex = state.get('currentFrameIndex');
+      const currentPlayerIndex = state.get('currentPlayerIndex');
       const newFrames = updateFrames(state, knockedPins);
       const newScores = updateAllScores(state, newFrames);
 
@@ -43,10 +45,41 @@ export default function(state = initialState, action) {
         'score': newScores
       });
 
-      if (knockedPins === 10 || currentRoll === 1) {
-        newState = changePlayer(newState);
+      if (currentFrameIndex === 9) {
+        if (currentRoll === 0) {
+          if (knockedPins === 10) {
+            newState = newState.merge({
+              'currentPins': 10
+            });
+          }
+          newState = newState.set('currentRoll', ++currentRoll);
+        } else if (currentRoll === 1) {
+          if (newFrames.getIn([currentFrameIndex, currentPlayerIndex, 'frameStatus']) === 'LAST_FRAME_STRIKE') {
+            if (knockedPins === 10) {
+              newState = newState.merge({
+                'currentPins': 10
+              });   
+            }
+            newState = newState.set('currentRoll', ++currentRoll);
+          } else {
+            if (remainingPins === 0) {
+              newState = newState.merge({
+                'currentPins': 10,
+                'currentRoll': ++currentRoll
+              });
+            } else {
+              newState = changePlayer(newState);
+            }
+          }
+        } else {
+          newState = changePlayer(newState);
+        }
       } else {
-        newState = newState.set('currentRoll', ++currentRoll);
+        if (knockedPins === 10 || currentRoll === 1) {
+          newState = changePlayer(newState);
+        } else {
+          newState = newState.set('currentRoll', ++currentRoll);
+        }
       }
 
       return newState;

@@ -33,19 +33,37 @@ export const updateFrames = (state, knockedPins) => {
   const currentPlayerIndex = state.get('currentPlayerIndex');
   const currentRoll = state.get('currentRoll');
   let frames = state.get('frames');
-  let frameStatus = frames.getIn([currentFrameIndex, 'frameStatus']);
+  let frameStatus = frames.getIn([currentFrameIndex, currentPlayerIndex, 'frameStatus']);
 
-  if (currentRoll === 0) {
-    if (knockedPins === 10) {
-      frameStatus = 'STRIKE';
-    } else {
-      frameStatus = 'ACTIVE';
+  if (currentFrameIndex === 9) {
+    if (currentRoll === 0) {
+      if (knockedPins === 10) {
+        frameStatus = 'LAST_FRAME_STRIKE';
+      } else {
+        frameStatus = 'ACTIVE';
+      }
+    } else if (currentRoll === 1) {
+      if (frameStatus !== 'LAST_FRAME_STRIKE') {
+        if (knockedPins + frames.getIn([currentFrameIndex, currentPlayerIndex, 'rolls', 0]) === 10) {
+          frameStatus = 'LAST_FRAME_SPARE';
+        } else {
+          frameStatus = 'COMPLETED';
+        }
+      }
     }
-  } else if (currentRoll === 1) {
-    if (knockedPins + frames.getIn([currentFrameIndex, currentPlayerIndex, 'rolls', 0]) === 10) {
-      frameStatus = 'SPARE';
-    } else {
-      frameStatus = 'COMPLETED';
+  } else {
+    if (currentRoll === 0) {
+      if (knockedPins === 10) {
+        frameStatus = 'STRIKE';
+      } else {
+        frameStatus = 'ACTIVE';
+      }
+    } else if (currentRoll === 1) {
+      if (knockedPins + frames.getIn([currentFrameIndex, currentPlayerIndex, 'rolls', 0]) === 10) {
+        frameStatus = 'SPARE';
+      } else {
+        frameStatus = 'COMPLETED';
+      }
     }
   }
 
@@ -102,6 +120,10 @@ export const updateScoreSingle = (currentFrameIndex, currentPlayerIndex, newFram
     } else if (oneAheadFrame.getIn(['rolls', 1])) {
       score = oneAheadFrame.getIn(['rolls', 0]) + oneAheadFrame.getIn(['rolls', 1]) + 10;
     }
+  } else if (frameStatus === 'LAST_FRAME_STRIKE' && currentFrame.getIn(['rolls', 2])) {
+    score = currentFrame.getIn(['rolls', 1]) + currentFrame.getIn(['rolls', 2]) + 10;
+  } else if (frameStatus === 'LAST_FRAME_SPARE' && currentFrame.getIn(['rolls', 2])) {
+    score = currentFrame.getIn(['rolls', 2]) + 10;
   }
 
   return score;
