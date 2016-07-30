@@ -15,6 +15,13 @@ export default function(state = initialState, action) {
         'totalPlayers': value,
         'players': new Array(value).fill('')
       });
+
+    case 'SAVE_PLAYERS_INFO':
+      return state.merge({
+        'hasStarted': true,
+        'players': action.value
+      });
+
     default:
       return state;
   }

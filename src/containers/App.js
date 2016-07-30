@@ -6,7 +6,9 @@ import Players from '../components/Players';
 export const App = React.createClass({
   render() {
     const Game = this.props.Game;
-    if (!Game.get('hasStarted')) {
+    if (Game.get('hasStarted')) {
+      return <div>Game Started</div>;
+    } else {
       return <Players Game={Game} />
     }
   }

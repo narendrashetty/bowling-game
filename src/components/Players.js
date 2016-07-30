@@ -25,16 +25,15 @@ export const Players = React.createClass({
     });
   },
 
+  onPlayerCountSelection(e) {
+    this.props.actions.saveTotalPlayers(e.target.value);
+  },
+
   renderSelection() {
-
-    const onCountSelection = (e) => {
-      this.props.actions.saveTotalPlayers(e.target.value);
-    };
-
     return (
       <div>
         Select the number of players:
-        <select value={0} onChange={onCountSelection}>
+        <select value={0} onChange={this.onPlayerCountSelection}>
           {PLAYERS_ALLOWED.map((value) => {
             return (
               <option value={value} key={value}>{value}</option>
@@ -45,20 +44,36 @@ export const Players = React.createClass({
     );
   },
 
-  renderPlayersList() {
-    const totalPlayers = this.state.totalPlayers;
+  onUpdatePlayerName(e) {
+    const index = parseInt(e.target.name, 10);
+    const players = this.state.players.set(index, e.target.value);
 
+    this.setState({
+      players
+    });
+  },
+
+  startGame() {
+    const totalPlayers = this.state.totalPlayers;
+    const players = this.state.players.filter(player => player !== '');
+    if (players.count() !== totalPlayers) {
+      return alert('fill all players name');
+    }
+    return this.props.actions.savePlayersInfo(players);
+  },
+
+  renderPlayersList() {
     return (
       <div>
         {this.state.players.map((player, index) => {
           return (
             <div key={index}>
               Add Player {index+1}
-              <input type="text" defaultValue={player} />
+              <input type="text" value={player} onChange={this.onUpdatePlayerName} name={index} />
             </div>
           );
         })}
-        <button>Start Game</button>
+        <button onClick={this.startGame}>Start Game</button>
       </div>
     );
   },
