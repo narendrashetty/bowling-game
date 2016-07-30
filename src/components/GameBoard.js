@@ -1,7 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import actions from '../actions';
 import Frames from './Frames';
 
 export const GameBoard = React.createClass({
@@ -45,6 +42,7 @@ export const GameBoard = React.createClass({
           players={this.props.Game.get('players')}
           score={this.props.Game.get('score')}
           totalScore={this.props.Game.get('totalScore')}
+          actions={this.props.actions}
         />
         {(() => {
           if (this.props.Game.get('hasCompleted')) {
@@ -58,14 +56,4 @@ export const GameBoard = React.createClass({
   }
 });
 
-function mapStateToProps(state) {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    'actions': bindActionCreators(actions, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
+export default GameBoard;

@@ -1,7 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import actions from '../actions';
 
 const PLAYERS_ALLOWED = [0,2,3,4,5,6];
 
@@ -103,14 +100,4 @@ export const Players = React.createClass({
   }
 });
 
-function mapStateToProps(state) {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    'actions': bindActionCreators(actions, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Players);
+export default Players;
