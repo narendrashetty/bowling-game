@@ -12,4 +12,10 @@ export default {
       value
     });
   },  
+
+  rollBall() {
+    return (dispatch) => dispatch({
+      'type': 'ROLL'
+    });
+  }
 };
