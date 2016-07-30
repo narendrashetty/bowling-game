@@ -21,7 +21,8 @@ export const Frames = React.createClass({
     return this.props.frames.map((frame) => {
       return (
         <td style={{'border': '1px solid'}}>
-          {frame.get(playerIndex).map((roll) => {
+          {frame.getIn([playerIndex, 'frameStatus'])}
+          {frame.getIn([playerIndex, 'rolls']).map((roll) => {
             return <div>{roll}</div>;
           })}
         </td>
