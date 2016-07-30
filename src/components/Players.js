@@ -29,21 +29,6 @@ export const Players = React.createClass({
     this.props.actions.saveTotalPlayers(e.target.value);
   },
 
-  renderSelection() {
-    return (
-      <div>
-        Select the number of players:
-        <select value={0} onChange={this.onPlayerCountSelection}>
-          {PLAYERS_ALLOWED.map((value) => {
-            return (
-              <option value={value} key={value}>{value}</option>
-            );
-          })}
-        </select>
-      </div>
-    );
-  },
-
   onUpdatePlayerName(e) {
     const index = parseInt(e.target.name, 10);
     const players = this.state.players.set(index, e.target.value);
@@ -62,28 +47,59 @@ export const Players = React.createClass({
     return this.props.actions.savePlayersInfo(players);
   },
 
+  renderSelection() {
+    return (
+      <div className="playerSelection">
+        <div className="playerSelection__header">
+          <p>Bowling Game</p>
+        </div>
+        <div className="playerSelection__body">
+          Select the number of players:
+          <select value={0} onChange={this.onPlayerCountSelection}>
+            {PLAYERS_ALLOWED.map((value) => {
+              return (
+                <option value={value} key={value}>{value}</option>
+              );
+            })}
+          </select>
+        </div>
+      </div>
+    );
+  },
+
   renderPlayersList() {
     return (
-      <div>
-        {this.state.players.map((player, index) => {
-          return (
-            <div key={index}>
-              Add Player {index+1}
-              <input type="text" value={player} onChange={this.onUpdatePlayerName} name={index} />
-            </div>
-          );
-        })}
-        <button onClick={this.startGame}>Start Game</button>
+      <div className="playerSelection">
+        <div className="playerSelection__header">
+          <p>Bowling Game</p>
+        </div>
+        <div className="playerSelection__body">
+          {this.state.players.map((player, index) => {
+            return (
+              <div key={index}>
+                Add Player {index+1}
+                <input type="text" value={player} onChange={this.onUpdatePlayerName} name={index} />
+              </div>
+            );
+          })}
+          <button className="btn" onClick={this.startGame}>Start Game</button>
+        </div>
       </div>
     );
   },
 
   render() {
-    if (this.state.totalPlayers === 0) {
-      return this.renderSelection();
-    } else {
-      return this.renderPlayersList();
-    }
+    return (
+      <div className="overlay">
+        {(() => {
+          if (this.state.totalPlayers === 0) {
+            return this.renderSelection();
+          } else {
+            return this.renderPlayersList();
+          }
+        })()}
+      </div>
+    );
   }
 });
 
