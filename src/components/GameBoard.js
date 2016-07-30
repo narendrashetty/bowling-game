@@ -15,7 +15,8 @@ export const GameBoard = React.createClass({
       <div>
         <Frames
           frames={this.props.Game.get('frames')}
-          players={this.props.Game.get('players')} 
+          players={this.props.Game.get('players')}
+          score={this.props.Game.get('score')}
         />
         <button onClick={this.rollBall}>Roll the Ball</button>
       </div>

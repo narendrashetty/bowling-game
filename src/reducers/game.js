@@ -1,11 +1,12 @@
 import { fromJS } from 'immutable';
-import { generateInitialFrames, updateFrames, changePlayer } from '../utils';
+import { generateInitialFrames, generateInitialScore, updateFrames, changePlayer, updateAllScores } from '../utils';
 
 const initialState = fromJS({
   'hasStarted': false,
   'totalPlayers': 0,
   'players': [],
   'frames': [],
+  'score': [],
   'currentPlayerIndex': 0,
   'currentFrameIndex': 0,
   'currentRoll': 0,
@@ -25,7 +26,8 @@ export default function(state = initialState, action) {
       return state.merge({
         'hasStarted': true,
         'players': action.value,
-        'frames': generateInitialFrames(action.value)
+        'frames': generateInitialFrames(action.value),
+        'score': generateInitialScore(action.value)
       });
 
     case 'ROLL':
@@ -33,10 +35,12 @@ export default function(state = initialState, action) {
       const knockedPins = Math.floor(Math.random() * (state.get('currentPins') + 1));
       const remainingPins = state.get('currentPins') - knockedPins;
       const newFrames = updateFrames(state, knockedPins);
+      const newScores = updateAllScores(state, newFrames);
 
       let newState = state.merge({
         'frames': newFrames,
-        'currentPins': remainingPins
+        'currentPins': remainingPins,
+        'score': newScores
       });
 
       if (knockedPins === 10 || currentRoll === 1) {

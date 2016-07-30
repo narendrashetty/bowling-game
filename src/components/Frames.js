@@ -18,13 +18,15 @@ export const Frames = React.createClass({
   },
 
   renderFrames(playerIndex) {
-    return this.props.frames.map((frame) => {
+    return this.props.frames.map((frame, index) => {
       return (
         <td style={{'border': '1px solid'}}>
           {frame.getIn([playerIndex, 'frameStatus'])}
           {frame.getIn([playerIndex, 'rolls']).map((roll) => {
             return <div>{roll}</div>;
           })}
+
+          {this.props.score.getIn([index, playerIndex])}
         </td>
       );
     });
