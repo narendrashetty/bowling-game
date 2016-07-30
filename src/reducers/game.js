@@ -1,11 +1,21 @@
 import { fromJS } from 'immutable';
 
 const initialState = fromJS({
-  'totalPlayers': -1,
+  'hasStarted': false,
+  'totalPlayers': 0,
   'players': [],
   'frames': []
 });
 
 export default function(state = initialState, action) {
-  return state;
+  switch(action.type) {
+    case 'SAVE_TOTAL_PLAYERS':
+      const value = parseInt(action.value, 10);
+      return state.merge({
+        'totalPlayers': value,
+        'players': new Array(value).fill('')
+      });
+    default:
+      return state;
+  }
 }

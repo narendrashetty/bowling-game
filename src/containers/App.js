@@ -1,10 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Players from '../components/Players';
 
 export const App = React.createClass({
   render() {
-    return <div>Hello World</div>;
+    const Game = this.props.Game;
+    if (!Game.get('hasStarted')) {
+      return <Players Game={Game} />
+    }
   }
 });
 
