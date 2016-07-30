@@ -17,5 +17,11 @@ export default {
     return (dispatch) => dispatch({
       'type': 'ROLL'
     });
-  }
+  },
+
+  reset() {
+    return (dispatch) => dispatch({
+      'type': 'RESET'
+    });
+  },
 };

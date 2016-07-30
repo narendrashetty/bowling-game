@@ -3,6 +3,8 @@ import { generateInitialFrames, generateInitialScore, updateFrames, changePlayer
 
 const initialState = fromJS({
   'hasStarted': false,
+  'hasCompleted': false,
+  'totalScore': [],
   'totalPlayers': 0,
   'players': [],
   'frames': [],
@@ -42,7 +44,14 @@ export default function(state = initialState, action) {
       let newState = state.merge({
         'frames': newFrames,
         'currentPins': remainingPins,
-        'score': newScores
+        'score': newScores,
+        'totalScore': newScores.reduce((a, b) => {
+          return a.map((value, index) => {
+            let currentValue = value ? parseInt(value, 10) : 0;
+            let nextValue = b.get(index) ? parseInt(b.get(index), 10) : 0;
+            return currentValue + nextValue;
+          });
+        })
       });
 
       if (currentFrameIndex === 9) {
@@ -83,6 +92,9 @@ export default function(state = initialState, action) {
       }
 
       return newState;
+
+    case 'RESET':
+      return initialState;
     default:
       return state;
   }

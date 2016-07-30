@@ -35,15 +35,9 @@ export const Frames = React.createClass({
   },
 
   renderScore(playerIndex) {
-    let totalScore = 0;
-    this.props.score.forEach((frame) => {
-      if (frame.get(playerIndex)) {
-        totalScore += frame.get(playerIndex);
-      }
-    });
     return (
       <td className="scoreboard__finalScore">
-        {totalScore}
+        {this.props.totalScore.get(playerIndex)}
       </td>
     );
   },

@@ -82,6 +82,7 @@ export const changePlayer = (state) => {
   let currentPlayerIndex = state.get('currentPlayerIndex');
   let currentFrameIndex = state.get('currentFrameIndex');
   let frames = state.get('frames');
+  let hasCompleted = false;
 
   currentPlayerIndex++;
 
@@ -90,10 +91,16 @@ export const changePlayer = (state) => {
     currentFrameIndex++;
   }
 
+  if (currentFrameIndex === 10) {
+    hasCompleted = true;
+    currentFrameIndex = 9;
+  }
+
   return state.merge({
     'currentRoll': 0,
     'currentPins': 10,
     currentPlayerIndex,
+    hasCompleted,
     currentFrameIndex,
     'frames': frames.mergeIn([currentFrameIndex, currentPlayerIndex], fromJS({
       'frameStatus': 'ACTIVE'
